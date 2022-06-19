@@ -90,8 +90,9 @@ class Player:
                 if poss_targets: #there are possible targets
                     target = random.choice(poss_targets) #chose target randomly (for now)
                     targeted_piece = board.get_piece(target)
-                    if targeted_piece.name == 'k' or targeted_piece.name == 'K': #target can not be a king
-                        continue
+                    if targeted_piece != None:
+                        if targeted_piece.name == 'k' or targeted_piece.name == 'K': #target can not be a king
+                            continue
                     p.pos = target
                     if board.update(self.color) >= 0:
                         break

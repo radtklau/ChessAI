@@ -114,20 +114,14 @@ class Board:
                         if color == piece.color: #check if attacked king has same color as last moves player, if yes -> move was illegal!
                             return -1
                         else:
-                            Board.check = key #check
+                            Board.check = key #check TODO Fix this in player.check_move()
 
                 if piece.pos != key: #change position of piece
                     piece.moves += 1
-                    #print("piece position is "+piece.pos+", key is "+key)
-                    #print("change value for key to none")
-                    Board.board[key] = None
-                    if Board.board[piece.pos] != None:
-                        #print("new piece pos was not empty -> beat other peace")
-                        #print("beat "+Board.board[piece.pos].name)
-                        if Board.board[piece.pos].name == "K" or Board.board[piece.pos].name == "k":
-                            time.sleep(10)
-                    print("piece is value of right key in board")
-                    Board.board[piece.pos] = piece
+                    Board.board[piece.pos] = piece #move piece to new position
+                    Board.board[key] = None #remove from old position
+                    
+        return 1
 
     def checkmate(self,color): #check if no checkmate or draw or player surrendered
         print("check mate, " + self.c[color ^ 1] + " wins.")
