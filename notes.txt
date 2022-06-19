@@ -1,0 +1,17 @@
+-nach jeder runde sollte das board alle pieces checken (pos,geschlagen,etc) und sich entsprechend updaten
+-implement calc_poss_targets() individually in every piece class
+-at piece creation calc poss targets, after every move of piece calc possible targets
+-Player can only move to targets that are in poss target list of piece
+
+#now check if these targets are already occupied, sollte calc_poss_targets eine piece funktion sein? eig eher player funktion. ne doch nicht weil jedes
+#eine andere calc_poss_targets funktion braucht, muss aber board übergeben kriegen von player (auch bei der erstellung)
+#bishop algo kann in endlos schleife enden!
+
+#todo: check for chess, force king to move if chess, implement check mate
+bugs: pawn kann nur in aller erstem zug des spiels zwei nach vorne, instant game over
+#update should look for check or check mate and set corresponding flags in the board object
+#bug: bishop and king can teleport, queen und rook berechnen nicht alle poss targets
+todo: when check also check if attacking piece can be removed not only whether king can flee or a friendly piece can be moved in the way
+
+Player 1 moves -> king player 1 is in check -> illegal move
+Player 2 moves -> king player 1 is in check -> check flag
