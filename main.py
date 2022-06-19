@@ -3,7 +3,7 @@ import time
 
 START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
-if __name__ == "__main__":
+if __name__ == "__main__": #main
     b = board.Board()
     b.setup(START_FEN)
 
