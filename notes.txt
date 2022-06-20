@@ -15,3 +15,8 @@ todo: when check also check if attacking piece can be removed not only whether k
 
 Player 1 moves -> king player 1 is in check -> illegal move
 Player 2 moves -> king player 1 is in check -> check flag
+
+If check:
+1. remove attacking piece
+2. put own piece in the way
+3. displace king

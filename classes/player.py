@@ -13,44 +13,57 @@ class Player:
             return False
         if p.color != self.color: #piece at origin has wrong color
             return False
-        #print(str(board.check) + " " + p.name + " PIÜI")
-        if board.check != None: #check!
-            legal_origins = Player.check_move(self,board) #return legal origins in case of check
-            if origin not in legal_origins: 
-                return False
         return True
    
     def check_move(self,board): #return legal origins in case of check   
         #get king
-        legal_origins = []
-        # if self.color == 1:
-        #     pos = board.find_pos('k')
-        # else:
-        #     pos = board.find_pos('K')
-        # print("king positions "+str(pos))
+        legal_moves = [] #first list for origins that need to attack certain field, 
         pos = board.check
         king = board.get_piece(pos)
-        #can attacking piece be removed?
+        
         attacking_pieces = board.field_attacked(pos, self.color ^ 1) #get attacking pieces
 
+        #can attacking piece be removed?
         if attacking_pieces: #if there are attacking pieces (there must be)
             for piece in attacking_pieces:
-                attacking_pieces_x2 = board.field_attacked(piece.pos, self.color) #get king-attacking piece attacking pieces
+                attacking_pieces_x2 = board.field_attacked(piece.pos, self.color) #get king-attacking piece attacking pieces of own color
                 if attacking_pieces_x2: #if there are pieces which attack the king-attacking piece
                     for piece_x2 in attacking_pieces_x2:
-                        legal_origins.append(piece_x2.pos) #append legal origin
+                        legal_moves.append((piece_x2.pos,piece.pos)) #append legal origin
         
         #can king escape?
         poss_targets = king.calc_poss_targets(board, self.color)
         if poss_targets:
-            legal_origins.append(pos)
+            for target in poss_targets:
+                legal_moves.append((pos,target))
 
-        #can friendly piece be moved in the way?
-        #only queen,bishop and rook have to be checked for this,...hard task
+        #can friendly piece be moved in the way? only queen,bishop and rook have to be checked for this
+        for piece in attacking_pieces:
+            if piece.name == "n" or piece.name == "N" or piece.name == "p" or piece.name == "P": #cant be blocked
+                continue
+            path = piece.calc_poss_targets(board,self.color ^ 1) #possible places for interception
+            cleared_path = []
+            for field in path:
+                if board.get_piece(field) != None:
+                    continue
+                cleared_path.append(field)
+
+            available_pieces = board.available_pieces(self.color)
+
+            for available_piece_key in available_pieces: #check if paths of available pieces and path of king attacking piece cross
+                available_piece = board.get_piece(available_piece_key)
+                ap_path = available_piece.calc_poss_targets(board,self.color)
+                for field in ap_path:
+                    for f in cleared_path:
+                        if field == f: #cross
+                            legal_moves.append((available_piece_key,field))
+
+        if not legal_moves:
+            board.checkmate(self.color)
 
         board.check = None
 
-        return legal_origins #there are also targets that are not legal in this situation, pieces which should remove king-attacking pieces may not chose a target other than the pos of these pieces
+        return legal_moves #there are also targets that are not legal in this situation, pieces which should remove king-attacking pieces may not chose a target other than the pos of these pieces
 
     def move(self,board):
         print("Move:")
@@ -77,31 +90,48 @@ class Player:
 
         else: #machine
             print("machine")
-            poss_origins = board.available_pieces(self.color) #keys of available pieces
-            while True:
-                origin = random.choice(poss_origins) #key
-                print("origin: "+origin)
-                if not Player.origin_valid(self,board,origin):
-                    print("Invalid origin")
-                    continue
-                #origin valid -> get piece
-                p = board.get_piece(origin)
-                poss_targets = p.calc_poss_targets(board, self.color) #calc poss targets
-                if poss_targets: #there are possible targets
-                    target = random.choice(poss_targets) #chose target randomly (for now)
-                    targeted_piece = board.get_piece(target)
-                    if targeted_piece != None:
-                        if targeted_piece.name == 'k' or targeted_piece.name == 'K': #target can not be a king
-                            continue
-                    p.pos = target
-                    if board.update(self.color) >= 0:
-                        break
-                    else:
-                        print("Illegal move, king is under attack!")
+            if board.check != None: #check
+                legal_moves = Player.check_move(self,board)
+
+                if not legal_moves:
+                    return
+
+                move = random.choice(legal_moves)
+
+                p = board.get_piece(move[0])
+                p.pos = move[1]
+
+                if board.update(self.color) >= 0:
+                    pass
+
+                return
+                
+            else: #regular move
+                poss_origins = board.available_pieces(self.color) #keys of available pieces
+                while True:
+                    origin = random.choice(poss_origins) #key
+                    print("origin: "+origin)
+                    if not Player.origin_valid(self,board,origin):
+                        print("Invalid origin")
                         continue
-                else:
-                    print("list empty")
-                    continue #BUG:endless loop possible if every remaining piece has no possible targets
+                    #origin valid -> get piece
+                    p = board.get_piece(origin)
+                    poss_targets = p.calc_poss_targets(board, self.color) #calc poss targets
+                    if poss_targets: #there are possible targets
+                        target = random.choice(poss_targets) #chose target randomly (for now)
+                        targeted_piece = board.get_piece(target)
+                        if targeted_piece != None:
+                            if targeted_piece.name == 'k' or targeted_piece.name == 'K': #target can not be a king
+                                continue
+                        p.pos = target
+                        if board.update(self.color) >= 0:
+                            break
+                        else:
+                            print("Illegal move, king is under attack!")
+                            continue
+                    else:
+                        print("list empty")
+                        continue #BUG:endless loop possible if every remaining piece has no possible targets
 
             print("position of piece object changed to "+ target)
             print("Moving "+str(p.name)+ " from " + str(origin) + " to " + str(target))

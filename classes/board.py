@@ -150,7 +150,7 @@ class Board:
                 
         return positions #return key(s)
 
-    def field_attacked(self,field,color): #calculate if field is attacked by any piece with color color
+    def field_attacked(self,field,color): #calculate if field is attacked by any piece with color color, returns attacking pieces or false
         attacking_pieces = []
         for piece in Board.board.values():
             if piece != None:
