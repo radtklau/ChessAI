@@ -80,8 +80,7 @@ class Board:
                 Board.board[key] = piece
 
     def pretty_print(self):
-        for i in range(8,0,-1):
-            print("")
+        for i in range(8,0,-1): 
             for h in Board.LETTERS:
                 key = h + str(i)
                 if Board.board[key] is not None:
@@ -91,33 +90,33 @@ class Board:
                 if Board.board[key] is not None:
                     print(Board.board[key].name,end="")
             print("|",end="")
-        print('\n')
+            print(i)
+        print(" a b c d e f g h")
+        print("___________________")
         #time.sleep(5)
 
     def update(self,color):
-        print("update:")
         self.move_no += 1
-        print("increased move counter")
-        print("for every key in board.board")
         for key in Board.board: #go through all fields
             if Board.board[key] is not None: #if there is a piece on this field
-                #print("value for "+str(Board.board[key])+ " is not empty")
                 piece = Board.board[key]
-                #print(piece.name + " is at "+ key)
 
                 #check if king is attacked and if last move was illegal because king was uncovered
                 if piece.name == 'k' or piece.name == 'K': #king
-                    print("piece is King")
                     attacking_pieces = Board.field_attacked(self,piece.pos,piece.color ^ 1)
                     if attacking_pieces: #king is in check (attacked by enemy color)
                         print("King is attacked by enemy, check!")
                         if color == piece.color: #check if attacked king has same color as last moves player, if yes -> move was illegal!
+                            print("last move uncovered king")
                             return -1
                         else:
+                            print("check")
                             Board.check = key #check TODO Fix this in player.check_move()
 
                 if piece.pos != key: #change position of piece
                     piece.moves += 1
+                    if Board.board[piece.pos] != None:
+                        print("Beat piece at "+str(piece.pos))
                     Board.board[piece.pos] = piece #move piece to new position
                     Board.board[key] = None #remove from old position
                     

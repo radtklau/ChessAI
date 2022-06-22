@@ -15,15 +15,15 @@ if __name__ == "__main__": #main
     while True:
         if player1.color == 1:
             print("player 1 (white)")
-            print("calling move")
             player1.move(b)
-            print("calling update")
+            time.sleep(2)
 
             if b.game_over:
                 break
 
             print("player 2 (black)")
             player2.move(b)
+            time.sleep(2)
 
             if b.game_over:
                 break
@@ -31,12 +31,14 @@ if __name__ == "__main__": #main
         else:
             print("player 2 (white)")
             player2.move(b)
+            time.sleep(2)
 
             if b.game_over:
                 break
 
             print("player 1 (black)")
             player1.move(b)
+            time.sleep(2)
 
             if b.game_over:
                 break

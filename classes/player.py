@@ -66,7 +66,6 @@ class Player:
         return legal_moves #there are also targets that are not legal in this situation, pieces which should remove king-attacking pieces may not chose a target other than the pos of these pieces
 
     def move(self,board):
-        print("Move:")
         if self.human: #human
             print("human")
             while True:
@@ -89,32 +88,37 @@ class Player:
             print("Moved from " + origin + " to " + target)
 
         else: #machine
-            print("machine")
+            print("machine is moving")
             if board.check != None: #check
+                print("check move")
                 legal_moves = Player.check_move(self,board)
 
                 if not legal_moves:
+                    print("no legal moves -> checkmate")
                     return
 
                 move = random.choice(legal_moves)
+                print("move is "+move)
 
                 p = board.get_piece(move[0])
                 p.pos = move[1]
 
                 if board.update(self.color) >= 0:
                     pass
+                else:
+                    print("last move was illegal (should not happen)")
 
                 return
                 
             else: #regular move
+                print("regular move")
                 poss_origins = board.available_pieces(self.color) #keys of available pieces
                 while True:
                     origin = random.choice(poss_origins) #key
-                    print("origin: "+origin)
                     if not Player.origin_valid(self,board,origin):
-                        print("Invalid origin")
                         continue
                     #origin valid -> get piece
+                    print("origin: "+origin)
                     p = board.get_piece(origin)
                     poss_targets = p.calc_poss_targets(board, self.color) #calc poss targets
                     if poss_targets: #there are possible targets
@@ -123,17 +127,19 @@ class Player:
                         if targeted_piece != None:
                             if targeted_piece.name == 'k' or targeted_piece.name == 'K': #target can not be a king
                                 continue
+                        
+                        print("target: "+target)
                         p.pos = target
                         if board.update(self.color) >= 0:
+                            print("update succesful")
                             break
                         else:
                             print("Illegal move, king is under attack!")
                             continue
                     else:
-                        print("list empty")
+                        print("no possible targets")
                         continue #BUG:endless loop possible if every remaining piece has no possible targets
 
-            print("position of piece object changed to "+ target)
             print("Moving "+str(p.name)+ " from " + str(origin) + " to " + str(target))
             board.pretty_print()
         
