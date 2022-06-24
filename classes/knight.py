@@ -1,10 +1,12 @@
 from classes.piece import Piece
+import math
 
 class Knight(Piece):
     def __init__(self,color,pos,name) -> None:
         super().__init__(color,pos,name)
 
-    def calc_poss_targets(self, board, color,mode=0): #BUG: knight can move from g1 to a3
+    def calc_poss_targets(self, board, color, mode=0): #BUG: knight can move from g1 to a3
+        d = {'a':1,'b':2,'c':3,'d':4,'e':5,'f':6,'g':7,'h':8}
         current_pos = super().notation_converter(self.pos,True)
         p_targets = [current_pos + 15, current_pos + 17, current_pos - 15, current_pos - 17, current_pos + 10, current_pos - 10, current_pos + 6, current_pos - 6]
 
@@ -13,6 +15,15 @@ class Knight(Piece):
 
         for target in p_targets:
             target_key = super().notation_converter(target,False)
+
+            target_key_alpha = target_key[0]
+            current_pos_alpha = self.pos[0]
+            target_key_num = target_key[1]
+            current_pos_num = self.pos[1]
+
+            if math.fabs(d[target_key_alpha] - d[current_pos_alpha]) > 3 or math.fabs(int(target_key_num) - int(current_pos_num)) > 3:
+                continue
+
             if board.board[target_key] is not None:
                 piece = board.board[target_key]
                 if piece.color != color: 

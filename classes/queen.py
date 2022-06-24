@@ -1,6 +1,17 @@
 from classes.piece import Piece
-
-class Queen(Piece):
+#BUG queen at d2 can attack ['d3, 'e2', a8', 'g6', 'f7', 'e8'] but not c2
+'''
+|R|N|B|Q|K|B|N|R|8
+|P|P|P|P|P|/|P|P|7
+|/|/|/|/|/|P|/|/|6
+|/|/|/|/|/|/|/|/|5
+|/|/|/|/|/|/|/|/|4
+|/|/|/|p|/|/|/|/|3
+|p|p|p|q|p|p|p|p|2
+|r|n|b|/|k|b|n|r|1
+ a b c d e f g h
+'''
+class Queen(Piece): 
     def __init__(self,color,pos,name) -> None:
         super().__init__(color,pos,name)
 
@@ -12,7 +23,7 @@ class Queen(Piece):
         aux_arr1 = [8,-8,1,-1]
         aux_arr2 = [(current_pos,1,0,65),(current_pos,1,0,0),(1,8,8,8),(1,8,8,0)]
 
-        for i in range(4):
+        for i in range(4): #+
             poss_pos = current_pos + aux_arr1[i]
             while poss_pos < (int((current_pos - aux_arr2[i][0]) / aux_arr2[i][1]) * aux_arr2[i][2]) + aux_arr2[i][3] and poss_pos > 0 and poss_pos < 65:
                 target_key = super().notation_converter(poss_pos,False)
@@ -33,7 +44,7 @@ class Queen(Piece):
         aux_arr3 = [(8,1),(8,-1),(-8,1),(-8,-1)]
         break_flag = False
 
-        for i in range(4):
+        for i in range(4): #x
             poss_pos = current_pos + aux_arr3[i][0] + aux_arr3[i][1]
             while poss_pos > 0 and poss_pos < 65:
                 target_key = super().notation_converter(poss_pos,False)

@@ -1,7 +1,11 @@
 from classes import *
 import time
+import keyboard
 
 START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+def key_listener(key):
+    keyboard.wait(key)
 
 if __name__ == "__main__": #main
     b = board.Board()
@@ -16,14 +20,16 @@ if __name__ == "__main__": #main
         if player1.color == 1:
             print("player 1 (white)")
             player1.move(b)
-            time.sleep(2)
+            #time.sleep(2)
+            key_listener('k')
 
             if b.game_over:
                 break
 
             print("player 2 (black)")
             player2.move(b)
-            time.sleep(2)
+            #time.sleep(2)
+            key_listener('k')
 
             if b.game_over:
                 break
@@ -42,6 +48,8 @@ if __name__ == "__main__": #main
 
             if b.game_over:
                 break
+
+
 
 
 

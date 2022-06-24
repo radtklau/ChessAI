@@ -98,7 +98,7 @@ class Player:
                     return
 
                 move = random.choice(legal_moves)
-                print("move is "+move)
+                print("move is "+str(move))
 
                 p = board.get_piece(move[0])
                 p.pos = move[1]

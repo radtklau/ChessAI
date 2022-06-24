@@ -12,7 +12,7 @@ class Piece:
     def print_info(self):
         print(self.color,self.pos,self.name)
 
-    def calc_poss_targets(self,board,color): #returns keys of possible targets BUG: color unnecessary because piece already knows own color
+    def calc_poss_targets(self,board,color,mode): #returns keys of possible targets BUG: color unnecessary because piece already knows own color
         return [] 
 
     def notation_converter(self,inp,alpha_num_to_num):

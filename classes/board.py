@@ -105,7 +105,7 @@ class Board:
                 if piece.name == 'k' or piece.name == 'K': #king
                     attacking_pieces = Board.field_attacked(self,piece.pos,piece.color ^ 1)
                     if attacking_pieces: #king is in check (attacked by enemy color)
-                        print("King is attacked by enemy, check!")
+                        print(str(self.c[piece.color])+" King is attacked by "+str(attacking_pieces)+", check!")
                         if color == piece.color: #check if attacked king has same color as last moves player, if yes -> move was illegal!
                             print("last move uncovered king")
                             return -1
