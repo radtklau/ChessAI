@@ -4,7 +4,7 @@ class Pawn(Piece):
     def __init__(self,color,pos,name) -> None:
         super().__init__(color,pos,name)
 
-    def calc_poss_targets(self,board,color,mode=0):
+    def calc_poss_targets(self,board,color,mode=0): #BUG pawn can skip other pieces with first 2field move
         current_pos = super().notation_converter(self.pos,True)
         if color == 1:
             p_targets = [current_pos + 8, current_pos + 7, current_pos + 9]

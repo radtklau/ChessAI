@@ -96,6 +96,7 @@ class Board:
         #time.sleep(5)
 
     def update(self,color):
+        print("update")
         self.move_no += 1
         for key in Board.board: #go through all fields
             if Board.board[key] is not None: #if there is a piece on this field
