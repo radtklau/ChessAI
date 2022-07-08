@@ -1,7 +1,7 @@
 from classes.piece import Piece
 import math
 
-class Knight(Piece):
+class Knight(Piece): #BUG can attack like bishop e.g. e2 to g4
     def __init__(self,color,pos,name) -> None:
         super().__init__(color,pos,name)
 
@@ -21,7 +21,7 @@ class Knight(Piece):
             target_key_num = target_key[1]
             current_pos_num = self.pos[1]
 
-            if math.fabs(d[target_key_alpha] - d[current_pos_alpha]) > 3 or math.fabs(int(target_key_num) - int(current_pos_num)) > 3:
+            if (math.fabs(d[target_key_alpha] - d[current_pos_alpha]) > 3 and math.fabs(int(target_key_num) - int(current_pos_num)) > 2) or (math.fabs(d[target_key_alpha] - d[current_pos_alpha]) > 2 and math.fabs(int(target_key_num) - int(current_pos_num)) > 3): 
                 continue
 
             if board.board[target_key] is not None:

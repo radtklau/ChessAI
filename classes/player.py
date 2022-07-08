@@ -89,7 +89,8 @@ class Player:
 
         else: #machine
             print("machine is moving")
-            if board.check != None: #check
+            print(board.check)
+            if board.check != None: #check BUG sometimes skips check move and does normal move
                 print("check move")
                 legal_moves = Player.check_move(self,board)
 
@@ -108,6 +109,7 @@ class Player:
                 else:
                     print("last move was illegal (should not happen)")
 
+                board.pretty_print()
                 return
                 
             else: #regular move
